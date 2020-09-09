@@ -6,10 +6,8 @@ using JSONParsApp.Services.ParseIntoJSON.Lecturer;
 using System;
 using System.Collections.Generic;
 using JSONParsApp.Services.ParseIntoJSON;
-using MyParsLib.ParsFromJson;
-using MyParsLib.ParseIntoJson;
-using MyParsLib.Data;
-
+using JsonParseLib.ParseFromJson;
+using JsonParseLib.ParseIntoJson;
 
 namespace JSONParsApp
 {

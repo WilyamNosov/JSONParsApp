@@ -10,9 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MyParsLib">
-      <HintPath>..\..\MyParsLib\MyParsLib\bin\Debug\netcoreapp3.1\MyParsLib.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\JsonParseLib\JsonParseLib.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace JSONParsApp.Services
 {
-    public class DefaultJSONData : IDefaultJSONData
+    public class DefaultJSONData<T> : IDefaultJSONData<T>
     {
         public virtual string GetJSONFile()
         {

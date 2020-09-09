@@ -1,18 +1,17 @@
-﻿using JSONParsApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace JSONParsApp.Services
 {
-    public class LecturerJSONData : DefaultJSONData<Lecturer>
+    public class AnyJSONData<T> : IDefaultJSONData<T>
     {
-        public override string GetJSONFile()
+        public string GetJSONFile()
         {
             var result = "";
 
-            using (StreamReader sr = new StreamReader("../../../JSONs/Lecturers.json"))
+            using (StreamReader sr = new StreamReader("../../../JSONs/AnyModel.json"))
             {
                 result = sr.ReadToEnd();
             }

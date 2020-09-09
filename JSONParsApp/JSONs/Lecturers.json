@@ -3,7 +3,7 @@
         "FirstName":"James",
         "SecondName":"Bond",
         "Age":56,
-        "BirhDay":"1956-09-08",
+        "BirthDay":"1956-09-08",
         "Gender":"Male",
         "Subject":"First",
         "DegreeLevel":"Doctor"
@@ -12,7 +12,7 @@
         "FirstName":"Robert",
         "SecondName":"Hrom",
         "Age":36,
-        "BirhDay":"1976-09-08",
+        "BirthDay":"1976-09-08",
         "Gender":"Male",
         "Subject":"Second",
         "DegreeLevel":"Candidate"
@@ -21,7 +21,7 @@
         "FirstName":"Scarlett",
         "SecondName":"Hostin",
         "Age":22,
-        "BirhDay":"1990-09-08",
+        "BirthDay":"1990-09-08",
         "Gender":"Female",
         "Subject":"Third",
         "DegreeLevel":"Postgraduate"

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace JSONParsApp.Services
 {
-    public interface IDefaultJSONData
+    public interface IDefaultJSONData<T>
     {
         string GetJSONFile();
     }

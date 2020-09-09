@@ -3,7 +3,7 @@
         "FirstName":"Peter",
         "SecondName":"Lee",
         "Age":16,
-        "BirhDay":"1996-09-08",
+        "BirthDay":"1996-09-08",
         "Gender":"Male",
         "Course":3,
         "DegreeType":"Bachalor"
@@ -12,7 +12,7 @@
         "FirstName":"Cris",
         "SecondName":"Prat",
         "Age":18,
-        "BirhDay":"1994-09-08",
+        "BirthDay":"1994-09-08",
         "Gender":"Male",
         "Course":4,
         "DegreeType":"Bachalor"
@@ -21,7 +21,7 @@
         "FirstName":"Lena",
         "SecondName":"Frost",
         "Age":16,
-        "BirhDay":"1996-09-08",
+        "BirthDay":"1996-09-08",
         "Gender":"Female",
         "Course":3,
         "DegreeType":"Bachalor"
@@ -30,7 +30,7 @@
         "FirstName":"Jona",
         "SecondName":"Sotalo",
         "Age":20,
-        "BirhDay":"1992-09-08",
+        "BirthDay":"1992-09-08",
         "Gender":"Male",
         "Course":1,
         "DegreeType":"Magister"

@@ -19,75 +19,61 @@ namespace JsonParseLib.ParseFromJson
             return persons;
         }
 
-        private List<T> ConverJSONToObjectArray(string jsonData)
+        public virtual List<T> ConverJSONToObjectArray(string jsonData)
         {
             var result = new List<T>();
-            var countOfFields = typeof(T).GetProperties().Length;
-            var values = ParseJSON(jsonData);
-            var sortedValues = RemoveDifferentValues(values);
+            var regexSelector = @"{((\S\w*\S:\S\w*-\w*-\w*\S,)|(\S\w*\S:\S?\w*\S?,?)){1,10}}";
+            var items = ParseJSON(regexSelector, jsonData);
 
-            for (int i = 0; i < sortedValues.Count / countOfFields; i++)
+            foreach (Match item in items)
             {
-                result.Add(GenerateNewItem(sortedValues, i, countOfFields));
+                result.Add(GenerateNewItem(item));
             }
 
             return result;
         }
 
-        private List<Match> RemoveDifferentValues(MatchCollection values)
+        public virtual MatchCollection ParseJSON(string regexSelector, string jsonData)
         {
-            var model = (T)Activator.CreateInstance(typeof(T));
-            var properties = model.GetType().GetProperties().Select(prop => prop.Name);
-
-            return values.Where(val => properties.Contains(val.Value.Split(':')[0].Replace("\"", ""))).Select(val => val).ToList();
-        }
-
-        private MatchCollection ParseJSON(string jsonData)
-        {
-            var regexSelector = @"(\S\w*\S:\S\w*-\w*-\w*\S)|(\S\w*\S:\S?\w*\S?)";
+            jsonData = prepareJsonData(jsonData);
             var regex = new Regex(regexSelector);
 
             return regex.Matches(jsonData);
         }
 
-        private T GenerateNewItem(List<Match> values, int beginIndex, int countOfFields)
+        private static string prepareJsonData(string jsonData)
+        {
+            return jsonData.Replace("  ", "").Replace("\r\n", "").Trim(' ');
+        }
+
+        public T GenerateNewItem(Match item)
         {
             var result = (T)Activator.CreateInstance(typeof(T));
+            var regexSelector = @"(\S\w*\S:\S\w*-\w*-\w*\S)|(\S\w*\S:\S?\w*\S?)";
+            var values = ParseJSON(regexSelector, item.Value);
 
-            for (int i = 0; i < countOfFields; i++)
+            foreach (Match value in values)
             {
-                var value = values[beginIndex * countOfFields + i].ToString().Split(':')[1].Replace("\"", "").Trim(',');
+                var field = value.Value.Split(':')[0].Replace("\"", "");
+                var data = value.Value.Split(':')[1].Replace("\"", "").Trim(',');
 
-                AddValue(result, value, values, beginIndex, countOfFields, i);
+                AddValue(result, field, data);
             }
 
             return result;
         }
 
-        private static void AddValue(T model, string value, List<Match> values, int beginIndex, int countOfFields, int insertIndex)
+        private static void AddValue(T model, string field, object value)
         {
-            if (model.GetType()
-                .GetProperty(values[beginIndex * countOfFields + insertIndex].ToString()
-                .Split(':')[0].Replace("\"", "")).PropertyType.Name == "Int32")
+            if (model.GetType().GetProperty(field) == null)
             {
-                model
-                    .GetType().GetProperty(values[beginIndex * countOfFields + insertIndex].ToString().Split(':')[0].Replace("\"", ""))
-                    .SetValue(model, Int32.Parse(value));
+                return;
             }
-            else if (model.GetType()
-                .GetProperty(values[beginIndex * countOfFields + insertIndex].ToString()
-                .Split(':')[0].Replace("\"", "")).PropertyType.Name == "DateTime")
-            {
-                model
-                    .GetType().GetProperty(values[beginIndex * countOfFields + insertIndex].ToString().Split(':')[0].Replace("\"", ""))
-                    .SetValue(model, DateTime.Parse(value));
-            }
-            else
-            {
-                model
-                    .GetType().GetProperty(values[beginIndex * countOfFields + insertIndex].ToString().Split(':')[0].Replace("\"", ""))
-                    .SetValue(model, value);
-            }
+
+            var saveType = model.GetType().GetProperty(field).PropertyType.FullName;
+            var saveValue = Convert.ChangeType(value, Type.GetType(saveType));
+
+            model.GetType().GetProperty(field).SetValue(model, saveValue);
         }
     }
 }

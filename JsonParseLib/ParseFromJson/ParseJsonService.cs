@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using JsonParseLib.Data;
 
 namespace JsonParseLib.ParseFromJson
@@ -27,9 +28,11 @@ namespace JsonParseLib.ParseFromJson
 
             foreach (Match item in items)
             {
-                result.Add(GenerateNewItem(item));
+                var generatedItem = GenerateNewItem(item);
+                result.Add(generatedItem);
             }
 
+            
             return result;
         }
 
@@ -63,7 +66,7 @@ namespace JsonParseLib.ParseFromJson
             return result;
         }
 
-        private static void AddValue(T model, string field, object value)
+        private void AddValue(T model, string field, object value)
         {
             var property = model.GetType().GetProperty(field);
 
@@ -72,8 +75,8 @@ namespace JsonParseLib.ParseFromJson
                 return;
             }
 
-            var saveType = property.PropertyType.FullName;
-            var saveValue = Convert.ChangeType(value, Type.GetType(saveType));
+            var saveType = property.PropertyType;
+            var saveValue = Convert.ChangeType(value, saveType);
 
             property.SetValue(model, saveValue);
         }

@@ -17,8 +17,9 @@ namespace JsonParseLib.ParseIntoJson
         private string BuildJSONData(T model)
         {
             var builder = new StringBuilder("{\n");
+            var properties = model.GetType().GetProperties();
 
-            foreach (var prop in model.GetType().GetProperties())
+            foreach (var prop in properties)
             {
                 AddToBuilder(builder, prop, model);
             }

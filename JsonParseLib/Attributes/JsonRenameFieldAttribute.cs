@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace JSONParsApp.Attributes
+namespace JsonParseLib.Attributes
 {
     public class JsonRenameFieldAttribute : Attribute
     {

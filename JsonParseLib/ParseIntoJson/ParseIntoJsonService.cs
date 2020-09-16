@@ -1,5 +1,7 @@
-﻿using System;
+﻿using JsonParseLib.Attributes;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -27,16 +29,16 @@ namespace JsonParseLib.ParseIntoJson
 
         private void AddToBuilder(StringBuilder builder, PropertyInfo prop, T model)
         {
-            var type = prop.PropertyType.Name;
-            var valueName = prop.Name;
+            var type = prop.PropertyType;
+            var valueName = GetPropAttributeName(prop);
             var value = prop.GetValue(model);
 
             AddValue(builder, type, valueName, value);
         }
 
-        private void AddValue(StringBuilder builder, string type, string name, object value)
+        private void AddValue(StringBuilder builder, Type type, string name, object value)
         {
-            if (type == "Int32")
+            if (type == typeof(Int16) || type == typeof(Int32) || type == typeof(Int64))
             {
                 builder.AppendFormat("\t{0}:{1}, \n", name, value);
             }
@@ -44,6 +46,11 @@ namespace JsonParseLib.ParseIntoJson
             {
                 builder.AppendFormat("\t{0}:\"{1}\", \n", name, value);
             }
+        }
+
+        private string GetPropAttributeName(PropertyInfo prop)
+        {
+            return prop.GetCustomAttributes<JsonRenameFieldAttribute>().FirstOrDefault()?.Field ?? prop.Name;
         }
     }
 }

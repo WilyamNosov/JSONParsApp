@@ -14,15 +14,15 @@ namespace JsonParseLib.ParseFromJson
         public List<T> ParseFile(string jsonUrl)
         {
             var jsonData = _jsonData.GetJsonFile(jsonUrl);
-            var persons = ConverJSONToObjectArray(jsonData);
+            var items = ConverJSONToObjectArray(jsonData);
 
-            return persons;
+            return items;
         }
 
         public virtual List<T> ConverJSONToObjectArray(string jsonData)
         {
             var result = new List<T>();
-            var regexSelector = @"{((\S\w*\S:\S\w*-\w*-\w*\S,)|(\S\w*\S:\S?\w*\S?,?)){1,10}}";
+            var regexSelector = @"{((\S\w*\S:\S\w*-\w*-\w*\S,)|(\S\w*\S:\S?\w*\S?,?)){1,100}}";
             var items = ParseJSON(regexSelector, jsonData);
 
             foreach (Match item in items)
@@ -65,15 +65,17 @@ namespace JsonParseLib.ParseFromJson
 
         private static void AddValue(T model, string field, object value)
         {
-            if (model.GetType().GetProperty(field) == null)
+            var property = model.GetType().GetProperty(field);
+
+            if (property == null)
             {
                 return;
             }
 
-            var saveType = model.GetType().GetProperty(field).PropertyType.FullName;
+            var saveType = property.PropertyType.FullName;
             var saveValue = Convert.ChangeType(value, Type.GetType(saveType));
 
-            model.GetType().GetProperty(field).SetValue(model, saveValue);
+            property.SetValue(model, saveValue);
         }
     }
 }
